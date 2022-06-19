@@ -18,6 +18,22 @@ export interface IStock {
   totalAmount?: number;
 }
 
+export interface IBazar {
+  id?: string;
+  name?: string;
+  donation_id?: string;
+  local_id?: string;
+  product_id?: string;
+  ncm_id?: string;
+  brand?: string;
+  ncm_code?: string;
+  count?: number;
+  unity_measurement?: string;
+  expiration_date?: Date;
+  minimal_qntt?: number;
+  totalAmount?: number;
+}
+
 export interface IProductLocalDonationGet {
   id?: string;
   donation_id?: string;

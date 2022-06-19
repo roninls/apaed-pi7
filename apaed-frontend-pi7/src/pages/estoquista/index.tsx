@@ -7,6 +7,7 @@ import PageNotFound from '../../shared/error/page-not-found';
 import Estoque from '../shared/estoque';
 import Fornecedor from '../shared/fornecedor';
 import Setor from '../shared/setor';
+import Bazar from '../shared/bazar';
 import AddFornecedor from '../shared/formFornecedor';
 import VerSetor from '../shared/formSetor';
 import Transferir from '../shared/transferir';
@@ -24,6 +25,7 @@ const Routes = ({ match }) => (
     <ErrorBoundaryRoute path={`${match.url}/setor`} component={Setor} />
     <ErrorBoundaryRoute path={`${match.url}/addFornecedor`} component={AddFornecedor} />
     <ErrorBoundaryRoute path={`${match.url}/viewFornecedor`} component={AddFornecedor} />
+    <ErrorBoundaryRoute path={`${match.url}/Bazar`} component={Bazar} />
     <ErrorBoundaryRoute path={`${match.url}/viewSetor`} component={VerSetor} />
     <ErrorBoundaryRoute path={`${match.url}/transferir`} component={Transferir} />
     <ErrorBoundaryRoute path={`${match.url}/addProduto`} component={AddProduto} />

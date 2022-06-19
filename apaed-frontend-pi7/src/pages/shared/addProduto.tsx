@@ -41,6 +41,9 @@ import { registerNewProductToStock, resetSuccessRegister } from '../../shared/re
 import { IOption } from '../../shared/model/option.model';
 import { AUTHORITIES } from '../../config/constants';
 import { isPast } from 'date-fns';
+import { ITransferPostPut } from '../../shared/model/transfer.model';
+import { makeTransfer, resetSuccessTransfer } from '../../shared/reducers/transfer.reducer';
+import { getLocals } from '../../shared/reducers/local.reducer';
 
 interface IAddProdutoProps extends StateProps, DispatchProps, RouteComponentProps {}
 
@@ -48,6 +51,8 @@ interface IAddProdutoState {
   productType: IOption;
   category: IOption;
   donation: IOption;
+  description: string;
+  destiny: IOption;
   expiration_date?: string;
   hasExpirationDate: boolean;
   productsList: IProductLocalDonationPostPut[];
@@ -62,6 +67,8 @@ class AddProduto extends React.Component<IAddProdutoProps, IAddProdutoState> {
       productType: {},
       category: {},
       donation: {},
+      description: '',
+      destiny: {},
       expiration_date: convertToDataInputFormat(new Date()),
       hasExpirationDate: true,
       productsList: [],
@@ -69,6 +76,18 @@ class AddProduto extends React.Component<IAddProdutoProps, IAddProdutoState> {
       isModalCancelOpen: false,
     };
   }
+
+  componentDidMount() {
+    this.props.getLocals(0, 1000000);
+  }
+
+  setSelectedDestiny = (destiny) => {
+    if (destiny) {
+      this.setState({
+        destiny,
+      });
+    }
+  };
 
   componentWillUnmount() {
     this.props.resetProducts();
@@ -117,8 +136,24 @@ class AddProduto extends React.Component<IAddProdutoProps, IAddProdutoState> {
     this.props.getDonorByDocument(document);
   };
 
-  handleValidSubmit = (event, { amount }) => {
+  handleValidSubmit = (event, { amount, total_amount_transfered }) => {
     event.persist();
+    if (this.state.description.length === 0) {
+      return;
+    }
+    const newTransfer: ITransferPostPut = {
+      description: this.state.description,
+      product_id: this.props.toTransferProduct.product_id,
+      total_amount_transfered: Number(total_amount_transfered),
+      destiny_id: String(this.state.destiny.value),
+      expiration_date: this.props.toTransferProduct.expiration_date,
+      active: true,
+      product_name: this.props.toTransferProduct.product.name,
+      product_brand: this.props.toTransferProduct.product.brand,
+      product_ncm_code: this.props.toTransferProduct.product.ncm.ncm_code,
+    };
+    this.props.makeTransfer(newTransfer);
+    
     const { productType, expiration_date, hasExpirationDate, category } = this.state;
     const { selectedDonation } = this.props;
     const MySwal = withReactContent(Swal);
@@ -197,11 +232,32 @@ class AddProduto extends React.Component<IAddProdutoProps, IAddProdutoState> {
       registerNewProductToStockError,
       registerNewProductToStockSuccess,
       category,
-      user,
       loadingStock,
     } = this.props;
 
     const { isModalOpen, productsList, isModalCancelOpen } = this.state;
+    const { toTransferProduct, locals, user, makeTransferSuccess, makeTransferError } = this.props;
+    const localsWithoutSelf = locals.filter((local) => local.id !== user.local_id);
+
+    if (!makeTransferSuccess && makeTransferError) {
+      const MySwal = withReactContent(Swal);
+      MySwal.fire({
+        title: 'Erro!',
+        text: 'Transferência não pode ser realizada! Por favor, tente novamente!',
+        icon: 'error',
+      }).then(() => this.props.history.push(`/${user.role.name === AUTHORITIES.ADMIN ? 'admin' : 'user'}/estoque`));
+      this.props.resetSuccessTransfer();
+    }
+
+    if (!makeTransferError && makeTransferSuccess) {
+      const MySwal = withReactContent(Swal);
+      MySwal.fire({
+        title: 'Transfêrencia Realizada!',
+        text: 'A sua transferência foi realizada com sucesso!',
+        icon: 'success',
+      }).then(() => this.props.history.push(`/${user.role.name === AUTHORITIES.ADMIN ? 'admin' : 'user'}/estoque`));
+      this.props.resetSuccessTransfer();
+    }
 
     if (!getDonorSuccess && getDonorError) {
       const MySwal = withReactContent(Swal);
@@ -354,6 +410,37 @@ class AddProduto extends React.Component<IAddProdutoProps, IAddProdutoState> {
                         color="primary"
                       >
                         Novo tipo de produto
+                      </Button>
+                    </Col>
+                  </Row>
+                  <Row className="d-flex align-items-center">
+                    <Col md={8}>
+                      <FormGroup>
+                        <Label for="Type">Setor</Label>
+                        <Select
+                          className="basic-single"
+                          classNamePrefix="select"
+                          id="destiny"
+                          name="destiny"
+                          options={localsWithoutSelf.map((local) => ({
+                            value: local.id,
+                            label: local.name,
+                            key: local.id,
+                          }))}
+                          placeholder="Setor"
+                          onChange={this.setSelectedDestiny}
+                          value={this.state.destiny}
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col md={4}>
+                      <Button
+                        tag={Link}
+                        to={`/${user.role.name === AUTHORITIES.ADMIN ? 'admin' : 'user'}/addSetor`}
+                        className="mt-3 mx-3"
+                        color="primary"
+                      >
+                        Novo Setor
                       </Button>
                     </Col>
                   </Row>
@@ -538,6 +625,9 @@ class AddProduto extends React.Component<IAddProdutoProps, IAddProdutoState> {
 }
 
 const mapStateToProps = (store: IRootState) => ({
+  toTransferProduct: store.transfer.toTransferProduct,
+  makeTransferSuccess: store.transfer.makeTransferSuccess,
+  makeTransferError: store.transfer.makeTransferError,
   donor: store.donor.donor,
   getDonorError: store.donor.getDonorError,
   getDonorSuccess: store.donor.getDonorSuccess,
@@ -552,10 +642,13 @@ const mapStateToProps = (store: IRootState) => ({
   registerNewProductToStockError: store.stock.registerNewProductToStockError,
   user: store.authentication.account,
   loadingStock: store.stock.loading,
+  locals: store.local.locals,
 });
 
 const mapDispatchToProps = {
   getDonorByDocument,
+  makeTransfer,
+  getLocals,
   getCategories,
   getProductsByNCM,
   getDonationsForUser,
@@ -568,6 +661,7 @@ const mapDispatchToProps = {
   resetCategories,
   resetDonation,
   resetSuccessRegister,
+  resetSuccessTransfer,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

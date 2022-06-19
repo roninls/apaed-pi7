@@ -9,6 +9,7 @@ import Estoque from 'pages/shared/estoque';
 import FormFornecedor from 'pages/shared/formFornecedor';
 import FormSetor from 'pages/shared/formSetor';
 import Setor from 'pages/shared/setor';
+import Bazar from '../shared/bazar';
 import Transferir from '../shared/transferir';
 import Transfers from './transfers';
 import Categoria from './categoria';
@@ -31,6 +32,7 @@ const Routes = ({ match }) => (
     <ErrorBoundaryRoute path={`${match.url}/addProduto`} component={AddProduto} />
     <ErrorBoundaryRoute path={`${match.url}/fornecedor`} component={Fornecedor} />
     <ErrorBoundaryRoute path={`${match.url}/addFornecedor`} component={FormFornecedor} />
+    <ErrorBoundaryRoute path={`${match.url}/bazar`} component={Bazar} />
     <ErrorBoundaryRoute path={`${match.url}/viewFornecedor`} component={FormFornecedor} />
     <ErrorBoundaryRoute path={`${match.url}/setor`} component={Setor} />
     <ErrorBoundaryRoute path={`${match.url}/viewSetor`} component={FormSetor} />

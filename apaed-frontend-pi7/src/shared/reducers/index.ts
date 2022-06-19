@@ -3,6 +3,7 @@ import authentication, { AuthenticationState } from './authentication';
 import stock, { StockState } from './stock.reducer';
 import donor, { DonorState } from './donor.reducer';
 import category, { CategoryState } from './category.reducer';
+import bazar, { BazarState } from './bazar.reducer';
 import product, { ProductState } from './product.reducer';
 import donation, { DonationState } from './donation.reducer';
 import transfer, { TransferState } from './transfer.reducer';
@@ -18,6 +19,7 @@ export interface IRootState {
   readonly stock: StockState;
   readonly donor: DonorState;
   readonly category: CategoryState;
+  readonly bazar: BazarState;
   readonly product: ProductState;
   readonly donation: DonationState;
   readonly transfer: TransferState;
@@ -34,6 +36,7 @@ const rootReducer = combineReducers<IRootState>({
   stock,
   donor,
   category,
+  bazar,
   product,
   donation,
   transfer,
