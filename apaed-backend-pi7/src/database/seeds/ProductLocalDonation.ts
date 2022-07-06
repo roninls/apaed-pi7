@@ -54,7 +54,7 @@ export default async function create(
   `);
 
   await connection.query(`
-  INSERT INTO PRODUCT_LOCAL_DONATION(id, donation_id, local_id, product_id, ncm_id, food_stamp_id) 
+  INSERT INTO PRODUCT_LOCAL_DONATION(id, donation_id, local_id, product_id, ncm_id, food_stamp_id, valor_product) 
   values ('${productLocalDonation4Id}', '${productLocalDonation4DonationId}','${productLocalDonation4LocalId}',
           '${productLocalDonation4ProductId}', '${productLocalDonation4NcmId}', '${foodStamp1Id}', 100);
   `);

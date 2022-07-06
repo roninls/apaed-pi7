@@ -21,7 +21,7 @@ productLocalDonationRouter.get('/', async (request, response) => {
 
   const productLocalDonation = await productLocalDonationRepository.query(
     'select count(*), food_stamp_id, MIN(pld.id) as id, MIN(n.minimal_more_products) as minimal_more_products,MIN(n.minimal_qntt) as minimal_qntt,' +
-      'MIN(n.id) as ncm_id, n.ncm_code, expiration_date, p.valor_product as valor_product,p.name, p.brand, product_id, um.unity_measurement' +
+      'MIN(n.id) as ncm_id, n.ncm_code, expiration_date,p.valor_product as valor_product,p.name, p.brand, product_id, um.unity_measurement' +
       ' from product_local_donation pld' +
       ' left outer join product p on pld.product_id = p.id' +
       ' left outer join ncm n on p.ncm_id = n.id' +
@@ -57,7 +57,7 @@ productLocalDonationRouter.get('/', async (request, response) => {
 
   const count = await productLocalDonationRepository.query(
     'select count(*),food_stamp_id, MIN(pld.id) as id, MIN(n.minimal_more_products) as minimal_more_products, MIN(n.minimal_qntt) as minimal_qntt,' +
-      'MIN(n.id) as ncm_id, n.ncm_code, expiration_date, p.valor_product as valor_product,p.name, p.brand, product_id, um.unity_measurement' +
+      'MIN(n.id) as ncm_id, n.ncm_code, expiration_date,p.valor_product as valor_product,p.name, p.brand, product_id, um.unity_measurement' +
       ' from product_local_donation pld' +
       ' left outer join product p on pld.product_id = p.id' +
       ' left outer join ncm n on p.ncm_id = n.id' +
