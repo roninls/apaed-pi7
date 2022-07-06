@@ -9,9 +9,9 @@ import Estoque from 'pages/shared/estoque';
 import FormFornecedor from 'pages/shared/formFornecedor';
 import FormSetor from 'pages/shared/formSetor';
 import Setor from 'pages/shared/setor';
-import Bazar from '../shared/bazar';
 import Transferir from '../shared/transferir';
-import Transfers from './transfers';
+import Transfers from './transfers_bkp';
+import Historico from './transfers';
 import Categoria from './categoria';
 import ViewCategoria from '../shared/addCategoria';
 import AddTipoProduto from '../shared/addTipoProduto';
@@ -32,12 +32,12 @@ const Routes = ({ match }) => (
     <ErrorBoundaryRoute path={`${match.url}/addProduto`} component={AddProduto} />
     <ErrorBoundaryRoute path={`${match.url}/fornecedor`} component={Fornecedor} />
     <ErrorBoundaryRoute path={`${match.url}/addFornecedor`} component={FormFornecedor} />
-    <ErrorBoundaryRoute path={`${match.url}/bazar`} component={Bazar} />
     <ErrorBoundaryRoute path={`${match.url}/viewFornecedor`} component={FormFornecedor} />
     <ErrorBoundaryRoute path={`${match.url}/setor`} component={Setor} />
     <ErrorBoundaryRoute path={`${match.url}/viewSetor`} component={FormSetor} />
     <ErrorBoundaryRoute path={`${match.url}/addSetor`} component={FormSetor} />
     <ErrorBoundaryRoute path={`${match.url}/transfers`} component={Transfers} />
+    <ErrorBoundaryRoute path={`${match.url}/historico`} component={Historico} />
     <ErrorBoundaryRoute path={`${match.url}/categories`} component={Categoria} />
     <ErrorBoundaryRoute path={`${match.url}/viewCategoria`} component={ViewCategoria} />
     <ErrorBoundaryRoute path={`${match.url}/products`} component={Products} />

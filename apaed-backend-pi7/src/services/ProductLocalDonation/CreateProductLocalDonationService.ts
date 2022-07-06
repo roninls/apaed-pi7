@@ -10,6 +10,7 @@ interface IRequestDTO {
   ncm_id: string;
   food_stamp_id: string;
   active: boolean;
+  valor_product: number;
 }
 
 class CreateProductLocalDonationService {

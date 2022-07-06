@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { number } from 'yup';
 import Donation from './Donation';
 import FoodStamp from './FoodStamp';
 import Local from './Local';
@@ -34,6 +35,9 @@ class ProductLocalDonation {
   @ManyToOne(() => Local, { eager: true })
   local: Local;
 
+  @Column('numeric')
+  valor_product: number;
+  
   @Column()
   product_id: string;
 

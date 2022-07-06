@@ -11,6 +11,7 @@ export interface IStock {
   ncm_id?: string;
   brand?: string;
   ncm_code?: string;
+  valor_product?: number;
   count?: number;
   unity_measurement?: string;
   expiration_date?: Date;
@@ -32,6 +33,7 @@ export interface IBazar {
   expiration_date?: Date;
   minimal_qntt?: number;
   totalAmount?: number;
+  totalvalor_product?: number;
 }
 
 export interface IProductLocalDonationGet {
@@ -46,6 +48,7 @@ export interface IProductLocalDonationGet {
   expiration_date?: string;
   active?: boolean;
   totalAmount?: number;
+  totalvalor_product?: number;
   created_at?: string;
   updated_at?: string;
 }
@@ -59,5 +62,6 @@ export interface IProductLocalDonationPostPut {
   name?: string;
   category?: string;
   amount?: number;
+  valor_product?: number;
   active?: boolean;
 }

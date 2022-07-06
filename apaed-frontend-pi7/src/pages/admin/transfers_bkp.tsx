@@ -12,8 +12,12 @@ function Transfers(props: ITransfersProps): JSX.Element {
   const columns = useMemo(
     () => [
       {
-        Header: 'Histórico',
+        Header: 'Transferências',
         columns: [
+          {
+            Header: 'Descrição',
+            accessor: 'description',
+          },
           {
             Header: 'Código NCM',
             accessor: 'product_ncm_code',
@@ -35,7 +39,7 @@ function Transfers(props: ITransfersProps): JSX.Element {
             accessor: 'destiny.name',
           },
           {
-            Header: 'Data Cadastro',
+            Header: 'Data',
             accessor: 'transfer_date',
             // eslint-disable-next-line react/display-name
             Cell: ({ cell: { value } }) => <span>{formataData(new Date(`${value}T00:00:00`))}</span>,

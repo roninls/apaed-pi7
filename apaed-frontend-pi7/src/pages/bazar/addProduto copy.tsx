@@ -50,9 +50,8 @@ interface IAddProdutoState {
   category: IOption;
   donation: IOption;
   expiration_date?: string;
-  hasExpirationDate: boolean;
   valor_product?: string;
-  hasValorProduct: boolean;
+  hasExpirationDate: boolean;
   productsList: IProductLocalDonationPostPut[];
   isModalOpen: boolean;
   isModalCancelOpen: boolean;
@@ -69,12 +68,17 @@ class AddProduto extends React.Component<IAddProdutoProps, IAddProdutoState> {
       expiration_date: convertToDataInputFormat(new Date()),
       hasExpirationDate: true,
       valor_product: '',
-      hasValorProduct: true,
       productsList: [],
       isModalOpen: false,
       isModalCancelOpen: false,
       selectedLocal: {},
     };
+  }
+
+  alterarValor = e => {
+    if(e.keyCode === 13){
+      const valorevent = e.target.value
+    }
   }
 
   componentDidMount() {
@@ -147,7 +151,7 @@ class AddProduto extends React.Component<IAddProdutoProps, IAddProdutoState> {
     this.props.getDonorByDocument(document);
   };
 
-  handleValidSubmit = (event, { amount }) => {
+  handleValidSubmit = (event, { amount, valor_product }) => {
     event.persist();
     const { productType, expiration_date, hasExpirationDate, category } = this.state;
     const { selectedDonation } = this.props;
@@ -165,6 +169,7 @@ class AddProduto extends React.Component<IAddProdutoProps, IAddProdutoState> {
       donation_id: selectedDonation.id,
       ncm_id: String(category.value),
       amount,
+      valor_product,
       // @ts-ignore
       expiration_date: hasExpirationDate ? convertDataInputFormatToDateServerFormat(expiration_date) : undefined,
       active: true,
@@ -177,6 +182,7 @@ class AddProduto extends React.Component<IAddProdutoProps, IAddProdutoState> {
       category: {},
       donation: {},
       expiration_date: convertToDataInputFormat(new Date()),
+      valor_product: '',
       hasExpirationDate: true,
     });
     MySwal.fire({
@@ -189,7 +195,7 @@ class AddProduto extends React.Component<IAddProdutoProps, IAddProdutoState> {
   handleCancel = () => {
     this.state.productsList.length > 0
       ? this.setState({ isModalCancelOpen: true })
-      : this.props.history.push(`/${this.props.user.role.name === AUTHORITIES.ADMIN ? 'admin' : 'user'}/estoque`);
+      : this.props.history.push(`/${this.props.user.role.name === AUTHORITIES.BAZAR ? 'bazar' : 'bazar'}/bazar`);
   };
 
   handleNewDonation = (event, { type }) => {
@@ -228,7 +234,6 @@ class AddProduto extends React.Component<IAddProdutoProps, IAddProdutoState> {
       registerNewProductToStockSuccess,
       category,
       user,
-      locals,
       loadingStock,
     } = this.props;
 
@@ -254,7 +259,7 @@ class AddProduto extends React.Component<IAddProdutoProps, IAddProdutoState> {
         text: 'Produtos cadastrados com sucesso!',
         icon: 'success',
       }).then(() => {
-        this.props.history.push(`/${user.role.name === AUTHORITIES.ADMIN ? 'admin' : 'user'}/estoque`);
+        this.props.history.push(`/${user.role.name === AUTHORITIES.BAZAR ? 'bazar' : 'bazar'}/bazar`);
       });
       this.props.resetSuccessRegister();
     }
@@ -348,7 +353,7 @@ class AddProduto extends React.Component<IAddProdutoProps, IAddProdutoState> {
                     <Col md={4}>
                       <Button
                         tag={Link}
-                        to={`/${user.role.name === AUTHORITIES.ADMIN ? 'admin' : 'user'}/viewCategoria`}
+                        to={`/${user.role.name === AUTHORITIES.BAZAR ? 'bazar' : 'bazar'}/viewCategoria`}
                         className="mt-3 mx-3"
                         color="primary"
                       >
@@ -380,7 +385,7 @@ class AddProduto extends React.Component<IAddProdutoProps, IAddProdutoState> {
                     <Col md={4}>
                       <Button
                         tag={Link}
-                        to={`/${user.role.name === AUTHORITIES.ADMIN ? 'admin' : 'user'}/addTipoProduto`}
+                        to={`/${user.role.name === AUTHORITIES.BAZAR ? 'bazar' : 'bazar'}/addTipoProduto`}
                         className="mt-3 mx-3"
                         color="primary"
                       >
@@ -389,6 +394,23 @@ class AddProduto extends React.Component<IAddProdutoProps, IAddProdutoState> {
                     </Col>
                   </Row>
                   <Row>
+                    <Col md={6}>
+                      <FormGroup className="mr-4">
+                        <Label for="valor_product">Valor (R$)</Label>
+                        <AvField
+                          className="form-control"
+                          name="valor_product"
+                          id="valor_product"
+                          type="number"
+                          validate={{
+                            required: {
+                              value: true,
+                              errorMessage: 'Esse campo é obrigatório!',
+                            },
+                          }}
+                        />
+                      </FormGroup>
+                    </Col>
                     <Col md={6}>
                       <FormGroup className="mr-4">
                         <Label for="amount">Quantidade ({category?.unity_measurement?.unity_measurement})</Label>
@@ -466,6 +488,7 @@ class AddProduto extends React.Component<IAddProdutoProps, IAddProdutoState> {
                             <th>Nome</th>
                             <th>Categoria</th>
                             <th>Quantidade</th>
+                            <th>Valor</th>
                             <th />
                           </tr>
                           {productsList.map((product, i) => {
@@ -475,6 +498,7 @@ class AddProduto extends React.Component<IAddProdutoProps, IAddProdutoState> {
                                 <td>{product.name}</td>
                                 <td>{product.category}</td>
                                 <td>{product.amount}</td>
+                                <td>{product.valor_product}</td>
                                 <td>
                                   <Button
                                     onClick={() => {
@@ -523,7 +547,7 @@ class AddProduto extends React.Component<IAddProdutoProps, IAddProdutoState> {
                       <Button
                         color="success"
                         tag={Link}
-                        to={`/${user.role.name === AUTHORITIES.ADMIN ? 'admin' : 'user'}/estoque`}
+                        to={`/${user.role.name === AUTHORITIES.BAZAR ? 'bazar' : 'bazar'}/bazar`}
                       >
                         Sim
                       </Button>

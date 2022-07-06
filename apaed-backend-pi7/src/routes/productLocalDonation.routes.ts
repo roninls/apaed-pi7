@@ -20,8 +20,8 @@ productLocalDonationRouter.get('/', async (request, response) => {
   );
 
   const productLocalDonation = await productLocalDonationRepository.query(
-    'select count(*), food_stamp_id, MIN(pld.id) as id, MIN(n.minimal_more_products) as minimal_more_products, MIN(n.minimal_qntt) as minimal_qntt,' +
-      'MIN(n.id) as ncm_id, n.ncm_code, expiration_date, p.name, p.brand, product_id, um.unity_measurement' +
+    'select count(*), food_stamp_id, MIN(pld.id) as id, MIN(n.minimal_more_products) as minimal_more_products,MIN(n.minimal_qntt) as minimal_qntt,' +
+      'MIN(n.id) as ncm_id, n.ncm_code, expiration_date, p.valor_product as valor_product,p.name, p.brand, product_id, um.unity_measurement' +
       ' from product_local_donation pld' +
       ' left outer join product p on pld.product_id = p.id' +
       ' left outer join ncm n on p.ncm_id = n.id' +
@@ -56,8 +56,8 @@ productLocalDonationRouter.get('/', async (request, response) => {
   );
 
   const count = await productLocalDonationRepository.query(
-    'select count(*), food_stamp_id, MIN(pld.id) as id, MIN(n.minimal_more_products) as minimal_more_products, MIN(n.minimal_qntt) as minimal_qntt,' +
-      'MIN(n.id) as ncm_id, n.ncm_code, expiration_date, p.name, p.brand, product_id, um.unity_measurement' +
+    'select count(*),food_stamp_id, MIN(pld.id) as id, MIN(n.minimal_more_products) as minimal_more_products, MIN(n.minimal_qntt) as minimal_qntt,' +
+      'MIN(n.id) as ncm_id, n.ncm_code, expiration_date, p.valor_product as valor_product,p.name, p.brand, product_id, um.unity_measurement' +
       ' from product_local_donation pld' +
       ' left outer join product p on pld.product_id = p.id' +
       ' left outer join ncm n on p.ncm_id = n.id' +
@@ -68,6 +68,7 @@ productLocalDonationRouter.get('/', async (request, response) => {
     // @ts-ignore
     [request.localId],
   );
+  // p.valor_product as valor_product
 
   return response.json([
     [...productLocalDonationWithTotalAmount],
@@ -141,6 +142,7 @@ productLocalDonationRouter.post('/', async (request, response) => {
     food_stamp_id,
     amount,
     active,
+    valor_product,
   } = request.body;
 
   const createProductLocalDonation = new CreateProductLocalDonationService();
@@ -155,6 +157,7 @@ productLocalDonationRouter.post('/', async (request, response) => {
         food_stamp_id,
         donation_id,
         active,
+        valor_product,
       });
       if (!productLocalDonation)
         return response
@@ -184,6 +187,7 @@ productLocalDonationRouter.put('/', async (request, response) => {
     ncm_id,
     food_stamp_id,
     active,
+    valor_product,
   } = request.body;
 
   const productLocalDonationToUpdate = {
@@ -195,6 +199,7 @@ productLocalDonationRouter.put('/', async (request, response) => {
     food_stamp_id,
     active,
     local_id: localId,
+    valor_product,
   };
 
   if (!validate(id)) {

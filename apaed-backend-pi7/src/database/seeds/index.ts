@@ -14,9 +14,11 @@ import createProducts from './Product';
 import createProductLocalDonation from './ProductLocalDonation';
 import createProductBazar from './ProductBazar';
 import createFoodStamp from './FoodStamp';
+import { number } from 'yup';
 
 const adminRoleId = uuidV4();
 const userRoleId = uuidV4();
+const bazarRoleId = uuidV4();
 
 const contact1Id = uuidV4();
 const contact2Id = uuidV4();
@@ -24,9 +26,11 @@ const contact2Id = uuidV4();
 const local1Id = uuidV4();
 const local2Id = uuidV4();
 const local3Id = uuidV4();
+const local4Id = uuidV4();
 
 const userId = uuidV4();
 const adminId = uuidV4();
+const bazarId = uuidV4();
 
 const donor1Id = uuidV4();
 const donor2Id = uuidV4();
@@ -106,23 +110,28 @@ async function execute() {
     );
     console.log('Configuration to UUID MIN');
     await connection.close();
-    await createRoles(adminRoleId, userRoleId);
+    await createRoles(adminRoleId, userRoleId, bazarRoleId);
     await createContacts(contact1Id, contact2Id);
     await createLocals(
       local1Id,
       local2Id,
       local3Id,
+      local4Id,
       contact1Id,
       contact2Id,
       contact1Id,
+      contact2Id,
     );
     await createUsers(
       adminId,
       userId,
+      bazarId,
+      local1Id,
       local1Id,
       local1Id,
       adminRoleId,
       userRoleId,
+      bazarRoleId,
     );
     await createDonors(donor1Id, donor2Id, contact1Id, contact2Id);
     await createDonations(donation1Id, donation2Id, donor1Id, donor2Id);

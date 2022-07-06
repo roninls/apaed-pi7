@@ -42,6 +42,17 @@ class Login extends React.Component<ILoginProps> {
         ) : (
           ''
         )}
+
+        {this.props.isAuthenticated ? (
+          this.props.user.role.name === AUTHORITIES.BAZAR ? (
+            <Redirect to="/bazar/bazar" />
+          ) : (
+            <></>
+          )
+        ) : (
+          ''
+        )}
+
         <div className="d-flex h-100 align-items-center justify-content-center">
           <Card className="w-25 shadow-lg">
             <CardHeader className="bg-dark text-white">Login</CardHeader>

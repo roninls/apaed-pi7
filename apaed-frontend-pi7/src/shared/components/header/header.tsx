@@ -36,43 +36,7 @@ function Header(props: IHeaderProps) {
       </NavbarToggler>
       <Collapse isOpen={isOpen} navbar className="w-100">
         <Nav className="d-flex w-100" navbar>
-          {props.user.role.name === AUTHORITIES.USER ? (
-            <>
-              <Link className="header-option text-center" to="/user/fornecedor" style={{ textDecoration: 'none' }}>
-                <h6 className="text-white">Fornecedor</h6>
-              </Link>
-              <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav>
-                  <h6 className="text-white header-option text-center">Produto</h6>
-                </DropdownToggle>
-                <DropdownMenu right>
-                  <Link to="/user/addProduto">
-                    <DropdownItem>Adicionar Produto</DropdownItem>
-                  </Link>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-              <Link className="header-option text-center" to="/user/estoque" style={{ textDecoration: 'none' }}>
-                <h6 className="text-white">Estoque</h6>
-              </Link>
-              <Link className="header-option text-center" to="/user/bazar" style={{ textDecoration: 'none' }}>
-                <h6 className="text-white">Bazar</h6>
-              </Link>
-              <Link className="header-option text-center" to="/user/setor" style={{ textDecoration: 'none' }}>
-                <h6 className="text-white">Setor</h6>
-              </Link>
-              <Link className="header-option text-center" to="/user/cestaBasica" style={{ textDecoration: 'none' }}>
-                <h6 className="text-white">Cestas básicas</h6>
-              </Link>
-              <Link
-                className="header-option text-center"
-                to="/"
-                style={{ textDecoration: 'none' }}
-                onClick={props.logout}
-              >
-                <h6 className="text-white">Sair</h6>
-              </Link>
-            </>
-          ) : (
+          {props.user.role.name === AUTHORITIES.ADMIN ? (
             <>
               <Link className="header-option text-center" to="/admin/fornecedor" style={{ textDecoration: 'none' }}>
                 <h6 className="text-white">Fornecedor</h6>
@@ -96,15 +60,24 @@ function Header(props: IHeaderProps) {
               <Link className="header-option text-center" to="/admin/products" style={{ textDecoration: 'none' }}>
                 <h6 className="text-white">Tipo Produto</h6>
               </Link>
-              <Link className="header-option text-center" to="/admin/bazar" style={{ textDecoration: 'none' }}>
-                <h6 className="text-white">Bazar</h6>
-              </Link>
               <Link className="header-option text-center" to="/admin/setor" style={{ textDecoration: 'none' }}>
                 <h6 className="text-white">Setor</h6>
               </Link>
-              <Link className="header-option text-center" to="/admin/transfers" style={{ textDecoration: 'none' }}>
-                <h6 className="text-white">Transferências</h6>
-              </Link>
+
+              <UncontrolledDropdown nav inNavbar>
+                <DropdownToggle nav>
+                  <h6 className="text-white header-option text-center">Histórico</h6>
+                </DropdownToggle>
+                <DropdownMenu right>
+                  <Link to="/admin/historico">
+                    <DropdownItem>Histórico</DropdownItem>
+                  </Link>
+                  <Link to="/admin/transfers">
+                    <DropdownItem>Transferências</DropdownItem>
+                  </Link>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+
               <Link className="header-option text-center" to="/admin/cestaBasica" style={{ textDecoration: 'none' }}>
                 <h6 className="text-white">Cestas básicas</h6>
               </Link>
@@ -120,8 +93,93 @@ function Header(props: IHeaderProps) {
                 <h6 className="text-white">Sair</h6>
               </Link>
             </>
-          )}
-        </Nav>
+          ) : (
+            <>
+            <Link className="header-option text-center" to="/user/fornecedor" style={{ textDecoration: 'none' }}>
+                <h6 className="text-white">Fornecedor</h6>
+              </Link>
+              <UncontrolledDropdown nav inNavbar>
+                <DropdownToggle nav>
+                  <h6 className="text-white header-option text-center">Produto</h6>
+                </DropdownToggle>
+                <DropdownMenu right>
+                  <Link to="/user/addProduto">
+                    <DropdownItem>Adicionar Produto</DropdownItem>
+                  </Link>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+              <Link className="header-option text-center" to="/user/estoque" style={{ textDecoration: 'none' }}>
+                <h6 className="text-white">Estoque</h6>
+              </Link>
+              <Link className="header-option text-center" to="/user/setor" style={{ textDecoration: 'none' }}>
+                <h6 className="text-white">Setor</h6>
+              </Link>
+              <Link className="header-option text-center" to="/user/cestaBasica" style={{ textDecoration: 'none' }}>
+                <h6 className="text-white">Cestas básicas</h6>
+              </Link>
+              <Link
+                className="header-option text-center"
+                to="/"
+                style={{ textDecoration: 'none' }}
+                onClick={props.logout}
+              >
+                <h6 className="text-white">Sair</h6>
+              </Link>
+            </>
+          ) ? (
+            <>
+              <Link className="header-option text-center" to="/bazar/fornecedor" style={{ textDecoration: 'none' }}>
+                <h6 className="text-white">Fornecedor</h6>
+              </Link>
+              <UncontrolledDropdown nav inNavbar>
+                <DropdownToggle nav>
+                  <h6 className="text-white header-option text-center">Produto</h6>
+                </DropdownToggle>
+                <DropdownMenu right>
+                  <Link to="/bazar/addProduto">
+                    <DropdownItem>Adicionar Produto</DropdownItem>
+                  </Link>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+              <Link className="header-option text-center" to="/bazar/bazar" style={{ textDecoration: 'none' }}>
+                <h6 className="text-white">Bazar</h6>
+              </Link>
+
+              <UncontrolledDropdown nav inNavbar>
+                <DropdownToggle nav>
+                  <h6 className="text-white header-option text-center">Histórico</h6>
+                </DropdownToggle>
+                <DropdownMenu right>
+                  <Link to="/bazar/historico">
+                    <DropdownItem>Histórico</DropdownItem>
+                  </Link>
+                  <Link to="/bazar/transfers">
+                    <DropdownItem>Transferências</DropdownItem>
+                  </Link>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+
+              <Link className="header-option text-center" to="/bazar/setor" style={{ textDecoration: 'none' }}>
+                <h6 className="text-white">Setor</h6>
+              </Link>
+              <Link className="header-option text-center" to="/bazar/cestaBasica" style={{ textDecoration: 'none' }}>
+                <h6 className="text-white">Cestas básicas</h6>
+              </Link>
+              <Link
+                className="header-option text-center"
+                to="/"
+                style={{ textDecoration: 'none' }}
+                onClick={props.logout}
+              >
+                <h6 className="text-white">Sair</h6>
+              </Link>
+            </>
+          ) : (
+          <>
+          </>
+          )
+          }
+          </Nav>
       </Collapse>
     </Navbar>
   );

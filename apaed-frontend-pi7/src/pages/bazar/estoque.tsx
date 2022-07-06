@@ -3,10 +3,13 @@ import React, { useEffect, useState } from 'react';
 import '../../styles/pages/login.scss';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Button, Card, CardBody, CardHeader } from 'reactstrap';
-import { faArrowAltCircleRight, faBoxes } from '@fortawesome/free-solid-svg-icons';
+import { Button,
+  Card,
+  CardBody,
+  CardHeader } from 'reactstrap';
+import { faArrowAltCircleRight, faBoxes, faEdit, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { getBazar, setProductToEdit } from '../../shared/reducers/bazar.reducer';
+import { getStock, setProductToEdit } from '../../shared/reducers/stock.reducer';
 import { IRootState } from '../../shared/reducers';
 import { setToTransferProduct } from '../../shared/reducers/transfer.reducer';
 import { setToTransferProduct as setToTransferFoodStampProduct } from '../../shared/reducers/food-stamp.reducer';
@@ -15,16 +18,16 @@ import { AUTHORITIES } from '../../config/constants';
 import Table from '../../shared/components/Table';
 import { differenceInCalendarDays, endOfToday } from 'date-fns';
 
-interface IBazarProps extends StateProps, DispatchProps {}
+interface IStockProps extends StateProps, DispatchProps {}
 
-function Bazar(props: IBazarProps) {
+function Stock(props: IStockProps) {
   const { stock, user, loading, totalCount } = props;
   const fetchIdRef = React.useRef(0);
   const [tablePageSize, setTablePageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
-    props.getBazar(0, 10);
+    props.getStock(0, 10);
     // eslint-disable-next-line
   }, []);
 
@@ -35,7 +38,7 @@ function Bazar(props: IBazarProps) {
       setCurrentPage(pageIndex);
       const skip = pageIndex * pageSize;
       const take = pageSize;
-      props.getBazar(skip, take);
+      props.getStock(skip, take);
     }
     // eslint-disable-next-line
   }, []);
@@ -63,48 +66,48 @@ function Bazar(props: IBazarProps) {
           Header: 'Nome',
           accessor: (originalRow) => originalRow,
           // eslint-disable-next-line react/display-name
-          Cell: ({ cell: { value: product_bazar } }) => <div>{product_bazar.name + ' ' + product_bazar.brand}</div>,
+          Cell: ({ cell: { value: productStock } }) => <div>{productStock.name + ' ' + productStock.brand}</div>,
         },
         {
           Header: 'Quantidade',
           accessor: (originalRow) => originalRow,
           // eslint-disable-next-line react/display-name
-          Cell: ({ cell: { value: product_bazar } }) => {
-            const differenceQuantity = product_bazar.totalAmount - Number(product_bazar.minimal_qntt);
+          Cell: ({ cell: { value: productStock } }) => {
+            const differenceQuantity = productStock.totalAmount - Number(productStock.minimal_qntt);
             const classNameQuantity =
-              differenceQuantity < product_bazar.minimal_more_products
+              differenceQuantity < productStock.minimal_more_products
                 ? differenceQuantity > 0
                   ? 'bg-warning text-white'
                   : 'bg-danger text-white'
                 : 'bg-success text-white';
-            return <div className={classNameQuantity}>{product_bazar.count + ' ' + product_bazar.unity_measurement}</div>;
+            return <div className={classNameQuantity}>{productStock.count + ' ' + productStock.unity_measurement}</div>;
           },
         },
         {
           Header: 'Valor (R$)',
           accessor: (originalRow) => originalRow,
           // eslint-disable-next-line react/display-name
-          Cell: ({ cell: { value: product_bazar } }) => <>{dateCell(product_bazar.price)}</>,
-        },
+          Cell: ({ cell: { value: productStock } }) => <>{'R$' + '10'}</>,
+        }, // productStock.valor_product
         {
           Header: 'Data de Validade',
           accessor: (originalRow) => originalRow,
           // eslint-disable-next-line react/display-name
-          Cell: ({ cell: { value: product_bazar } }) => <>{dateCell(product_bazar.expiration_date)}</>,
+          Cell: ({ cell: { value: productStock } }) => <>{dateCell(productStock.expiration_date)}</>,
         },
         {
           Header: 'Opções',
           accessor: (originalRow) => originalRow,
           // eslint-disable-next-line react/display-name
-          Cell: ({ cell: { value: product_bazar } }) => (
+          Cell: ({ cell: { value: productStock } }) => (
             <div>
               <Button
                 className="mx-3"
                 tag={Link}
-                to={`/${user.role.name === AUTHORITIES.ADMIN ? 'admin' : 'user'}/transferir`}
+                to={`/${user.role.name === AUTHORITIES.BAZAR ? 'bazar' : 'bazar'}/transferir`}
                 outline
                 color="secondary"
-                onClick={() => props.setToTransferProduct(product_bazar, product_bazar.count)}
+                onClick={() => props.setToTransferProduct(productStock, productStock.count)}
                 title="Transferir produto para setor"
               >
                 <FontAwesomeIcon icon={faArrowAltCircleRight} />
@@ -112,13 +115,35 @@ function Bazar(props: IBazarProps) {
               <Button
                 className="mx-3"
                 tag={Link}
-                to={`/${user.role.name === AUTHORITIES.ADMIN ? 'admin' : 'user'}/transferirCesta`}
+                to={`/${user.role.name === AUTHORITIES.BAZAR ? 'bazar' : 'bazar'}/transferirCesta`}
                 outline
                 color="secondary"
-                onClick={() => props.setToTransferFoodStampProduct(product_bazar, product_bazar.count)}
+                onClick={() => props.setToTransferFoodStampProduct(productStock, productStock.count)}
                 title="Adicionar produto a cesta"
               >
                 <FontAwesomeIcon icon={faBoxes} />
+              </Button>
+              <Button
+                className="mx-3"
+                tag={Link}
+                to={`/${user.role.name === AUTHORITIES.BAZAR ? 'bazar' : 'bazar'}/EditValor`}
+                outline
+                color="secondary"
+                onClick={() => props.setToTransferProduct(productStock, productStock.count)}
+                title="Editar Valor do Produto"
+              >
+                <FontAwesomeIcon icon={faEdit} />
+              </Button>
+              <Button
+                className="mx-3"
+                tag={Link}
+                to={`/${user.role.name === AUTHORITIES.BAZAR ? 'bazar' : 'bazar'}/ProductSold`}
+                outline
+                color="secondary"
+                onClick={() => props.setToTransferProduct(productStock, productStock.count)}
+                title="Produto Vendido"
+              >
+                <FontAwesomeIcon icon={faPaperPlane} />
               </Button>
             </div>
           ),
@@ -153,10 +178,11 @@ const mapStateToProps = (store: IRootState) => ({
   stock: store.stock.stock,
   user: store.authentication.account,
   loading: store.stock.loading,
+  products: store.product.products,
   totalCount: store.stock.totalCount,
 });
 const mapDispatchToProps = {
-  getBazar,
+  getStock,
   setProductToEdit,
   setToTransferProduct,
   setToTransferFoodStampProduct,
@@ -166,4 +192,4 @@ type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
 // @ts-ignore
-export default connect(mapStateToProps, mapDispatchToProps)(Bazar);
+export default connect(mapStateToProps, mapDispatchToProps)(Stock);

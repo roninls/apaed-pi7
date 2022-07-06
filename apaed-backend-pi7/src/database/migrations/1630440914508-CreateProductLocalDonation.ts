@@ -37,6 +37,10 @@ export default class CreateProductLocalDonation1630440914508
             type: 'uuid',
           },
           {
+            name: 'valor_product',
+            type: 'numeric',
+          },
+          {
             name: 'ncm_id',
             type: 'uuid',
           },

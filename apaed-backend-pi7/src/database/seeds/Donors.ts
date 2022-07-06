@@ -10,8 +10,13 @@ export default async function create(
 
   await connection.query(`
   INSERT INTO DONORS(id, name, contact_id, document, email) 
-  values ('${donor1Id}', 'Victor', '${donor1ContactId}', '04487251184', 'victoralcan@gmail.com');
+  values ('${donor1Id}', 'Ronin', '${donor1ContactId}', '20771', 'ronindiiniiz@gmail.com');
   `);
+  
+  // await connection.query(`
+  // INSERT INTO DONORS(id, name, contact_id, document, email) 
+  // values ('${donor1Id}', 'Victor', '${donor1ContactId}', '04487251184', 'victoralcan@gmail.com');
+  // `);
 
   await connection.query(`
       INSERT INTO DONORS(id, name, contact_id, document, email)
