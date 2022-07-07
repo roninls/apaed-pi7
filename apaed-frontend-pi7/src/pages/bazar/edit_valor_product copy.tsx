@@ -10,6 +10,7 @@ import Select from 'react-select';
 import { getCategories } from '../../shared/reducers/category.reducer';
 import { IOption } from '../../shared/model/option.model';
 import { IProduct } from '../../shared/model/product.model';
+import { IStock } from '../../shared/model/productLocalDonation.model';
 import { createProduct, reset, updateProduct } from '../../shared/reducers/product.reducer';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
@@ -219,7 +220,7 @@ const mapStateToProps = (store: IRootState) => ({
   updateProductSuccess: store.product.updateProductSuccess,
   updateProductError: store.product.updateProductError,
   loading: store.product.loading,
-  toViewProduct: store.product.toViewProduct,
+  toViewProduct: store.stock.toViewProduct,
   user: store.authentication.account,
 });
 const mapDispatchToProps = {

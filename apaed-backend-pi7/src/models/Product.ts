@@ -22,6 +22,9 @@ class Product {
   @Column()
   ncm_id: string;
 
+  @Column('numeric')
+  valor_product: number;
+
   @ManyToOne(() => Ncm, { eager: true })
   ncm: Ncm;
 

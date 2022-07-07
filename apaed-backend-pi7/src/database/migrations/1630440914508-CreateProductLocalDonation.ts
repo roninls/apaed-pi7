@@ -39,6 +39,7 @@ export default class CreateProductLocalDonation1630440914508
           {
             name: 'valor_product',
             type: 'numeric',
+            isNullable: true,
           },
           {
             name: 'ncm_id',

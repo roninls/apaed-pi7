@@ -49,7 +49,7 @@ productsRouter.post('/', async (request, response) => {
     return response.status(400).json({ error: 'Validation fails' });
   }
 
-  const { name, brand, ncm_id, active } = request.body;
+  const { name, brand, ncm_id, active, valor_product } = request.body;
 
   const createProduct = new CreateProductService();
 
@@ -61,6 +61,7 @@ productsRouter.post('/', async (request, response) => {
       brand,
       ncm_id,
       active,
+      valor_product,
     });
   } catch (e) {
     console.log(e);
@@ -80,7 +81,7 @@ productsRouter.put('/', async (request, response) => {
     return response.status(400).json({ error: 'Validation fails' });
   }
 
-  const { id, name, brand, ncm_id, active } = request.body;
+  const { id, name, brand, ncm_id, active, valor_product } = request.body;
 
   const productToUpdate = {
     id,
@@ -88,6 +89,7 @@ productsRouter.put('/', async (request, response) => {
     brand,
     ncm_id,
     active,
+    valor_product,
   };
 
   if (!validate(id)) {

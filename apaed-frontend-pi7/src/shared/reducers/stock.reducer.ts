@@ -1,6 +1,7 @@
 import { FAILURE, REQUEST, SUCCESS } from './action-type.util';
 import APIUrl from '../../config/api';
 import { IStock, IProductLocalDonationGet, IProductLocalDonationPostPut } from '../model/productLocalDonation.model';
+import { IProduct } from '../model/product.model';
 
 export const ACTION_TYPES = {
   GET_STOCK: 'stock/GET_STOCK',
@@ -9,6 +10,7 @@ export const ACTION_TYPES = {
   REGISTER_NEW_PRODUCT_TO_STOCK: 'stock/REGISTER_NEW_PRODUCT_TO_STOCK',
   RESET_REGISTER: 'stock/RESET_REGISTER',
   RESET: 'stock/RESET',
+  SET_TO_VIEW_PRODUCT: 'product/SET_TO_VIEW_PRODUCT',
   UPDATE_PRODUCT_LOCAL_DONATION: 'stock/UPDATE_PRODUCT_LOCAL_DONATION',
 };
 
@@ -27,6 +29,7 @@ const initialState = {
   totalCountByFoodStampId: 0,
   updateStockSuccess: false,
   updateStockError: false,
+  toViewProduct: {} as IProduct,
 };
 
 export type StockState = Readonly<typeof initialState>;
@@ -108,6 +111,11 @@ export default (state: StockState = initialState, action): StockState => {
         ...state,
         toEditProduct: action.payload,
       };
+    case ACTION_TYPES.SET_TO_VIEW_PRODUCT:
+      return {
+        ...state,
+        toViewProduct: action.payload,
+      };
     case ACTION_TYPES.RESET_REGISTER:
       return {
         ...state,
@@ -130,6 +138,13 @@ export const getStock = (skip: number, take: number) => async (dispatch) => {
   });
 };
 
+export const setToViewProduct = (product: IProduct) => async (dispatch) => {
+  await dispatch({
+    type: ACTION_TYPES.SET_TO_VIEW_PRODUCT,
+    payload: product,
+  });
+};
+
 export const getStockByFoodStampId = (id: string, skip: number, take: number) => async (dispatch) => {
   console.log(id);
   await dispatch({
@@ -145,14 +160,14 @@ export const registerNewProductToStock = (product: IProductLocalDonationPostPut)
   });
 };
 
-export const setProductToEdit = (product: IProductLocalDonationGet) => async (dispatch) => {
+export const setProductToEdit = (product: IStock) => async (dispatch) => {
   await dispatch({
     type: ACTION_TYPES.EDIT_PRODUCT,
     payload: product,
   });
 };
 
-export const updateProduct = (foodStampId: string, product: IProductLocalDonationPostPut) => async (dispatch) => {
+export const updateProduct = (foodStampId: string, product: IStock) => async (dispatch) => {
   await dispatch({
     type: ACTION_TYPES.UPDATE_PRODUCT_LOCAL_DONATION,
     payload: APIUrl.put('stock', product),

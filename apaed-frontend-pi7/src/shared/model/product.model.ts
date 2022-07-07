@@ -9,4 +9,6 @@ export interface IProduct {
   active?: boolean;
   created_at?: string;
   updated_at?: string;
+  product?: IProduct;
+  valor_product?: number;
 }

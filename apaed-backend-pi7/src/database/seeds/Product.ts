@@ -17,33 +17,33 @@ export default async function create(
   const connection = await createConnection();
 
   await connection.query(`
-  INSERT INTO PRODUCT(id, name, brand, ncm_id) 
-  values ('${product1Id}', 'Arroz', 'Seara', '${product1NcmId}');
+  INSERT INTO PRODUCT(id, name, brand, ncm_id, valor_product) 
+  values ('${product1Id}', 'Arroz', 'Seara', '${product1NcmId}', 100);
   `);
 
   await connection.query(`
-  INSERT INTO PRODUCT(id, name, brand, ncm_id) 
-  values ('${product2Id}', 'Feijao', 'Pretinho', '${product2NcmId}');
+  INSERT INTO PRODUCT(id, name, brand, ncm_id, valor_product) 
+  values ('${product2Id}', 'Feijao', 'Pretinho', '${product2NcmId}', 100);
   `);
 
   await connection.query(`
-  INSERT INTO PRODUCT(id, name, brand, ncm_id) 
-  values ('${product3Id}', 'Camiseta Verde', 'Lacoste', '${product3NcmId}');
+  INSERT INTO PRODUCT(id, name, brand, ncm_id, valor_product) 
+  values ('${product3Id}', 'Camiseta Verde', 'Lacoste', '${product3NcmId}', 100);
   `);
 
   await connection.query(`
-  INSERT INTO PRODUCT(id, name, brand, ncm_id) 
-  values ('${product4Id}', 'Short de corrida', 'Adidas', '${product4NcmId}');
+  INSERT INTO PRODUCT(id, name, brand, ncm_id, valor_product) 
+  values ('${product4Id}', 'Short de corrida', 'Adidas', '${product4NcmId}', 100);
   `);
 
   await connection.query(`
-  INSERT INTO PRODUCT(id, name, brand, ncm_id) 
-  values ('${product5Id}', 'Limpa vidros', 'Veja', '${product5NcmId}');
+  INSERT INTO PRODUCT(id, name, brand, ncm_id, valor_product) 
+  values ('${product5Id}', 'Limpa vidros', 'Veja', '${product5NcmId}', 100);
   `);
 
   await connection.query(`
-  INSERT INTO PRODUCT(id, name, brand, ncm_id) 
-  values ('${product6Id}', 'Arroz', 'Tio Joao', '${product6NcmId}');
+  INSERT INTO PRODUCT(id, name, brand, ncm_id, valor_product) 
+  values ('${product6Id}', 'Arroz', 'Tio Joao', '${product6NcmId}', 100);
   `);
 
   await connection.close();

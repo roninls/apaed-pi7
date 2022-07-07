@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 
 import '../../styles/pages/login.scss';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { Button,
   Card,
   CardBody,
   CardHeader } from 'reactstrap';
 import { faArrowAltCircleRight, faBoxes, faEdit, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { getStock, setProductToEdit } from '../../shared/reducers/stock.reducer';
+import { getStock, setProductToEdit, setToViewProduct } from '../../shared/reducers/stock.reducer';
 import { IRootState } from '../../shared/reducers';
 import { setToTransferProduct } from '../../shared/reducers/transfer.reducer';
 import { setToTransferProduct as setToTransferFoodStampProduct } from '../../shared/reducers/food-stamp.reducer';
@@ -17,17 +17,19 @@ import { formataData } from '../../shared/utils/formataData';
 import { AUTHORITIES } from '../../config/constants';
 import Table from '../../shared/components/Table';
 import { differenceInCalendarDays, endOfToday } from 'date-fns';
+import { getProducts, reset } from '../../shared/reducers/product.reducer';
 
-interface IStockProps extends StateProps, DispatchProps {}
+interface IStockProps extends StateProps, DispatchProps, RouteComponentProps {}
 
 function Stock(props: IStockProps) {
-  const { stock, user, loading, totalCount } = props;
+  const { products, stock, user, loading, totalCount } = props;
   const fetchIdRef = React.useRef(0);
   const [tablePageSize, setTablePageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
     props.getStock(0, 10);
+    props.getProducts(0, 10);
     // eslint-disable-next-line
   }, []);
 
@@ -39,6 +41,7 @@ function Stock(props: IStockProps) {
       const skip = pageIndex * pageSize;
       const take = pageSize;
       props.getStock(skip, take);
+      props.getProducts(skip, take);
     }
     // eslint-disable-next-line
   }, []);
@@ -87,7 +90,7 @@ function Stock(props: IStockProps) {
           Header: 'Valor (R$)',
           accessor: (originalRow) => originalRow,
           // eslint-disable-next-line react/display-name
-          Cell: ({ cell: { value: productStock } }) => <>{'R$' + '10'}</>,
+          Cell: ({ cell: { value: productStock } }) => <>{'R$' + productStock.valor_product}</>,
         }, // productStock.valor_product
         {
           Header: 'Data de Validade',
@@ -124,23 +127,25 @@ function Stock(props: IStockProps) {
                 <FontAwesomeIcon icon={faBoxes} />
               </Button>
               <Button
-                className="mx-3"
-                tag={Link}
-                to={`/${user.role.name === AUTHORITIES.BAZAR ? 'bazar' : 'bazar'}/EditValor`}
+              className="mx-3"
+                onClick={() => {
+                  props.setProductToEdit(productStock);
+                  props.history.push(`/${user.role.name === AUTHORITIES.BAZAR ? 'bazar' : 'bazar'}/EditValor`);
+                }}
                 outline
                 color="secondary"
-                onClick={() => props.setToTransferProduct(productStock, productStock.count)}
-                title="Editar Valor do Produto"
+                title='Alterar Valor do Produto'
               >
                 <FontAwesomeIcon icon={faEdit} />
               </Button>
               <Button
                 className="mx-3"
-                tag={Link}
-                to={`/${user.role.name === AUTHORITIES.BAZAR ? 'bazar' : 'bazar'}/ProductSold`}
                 outline
                 color="secondary"
-                onClick={() => props.setToTransferProduct(productStock, productStock.count)}
+                onClick={() => {
+                  props.setToViewProduct(productStock);
+                  props.history.push(`/${user.role.name === AUTHORITIES.BAZAR ? 'bazar' : 'bazar'}/ProductSold`);
+                }}
                 title="Produto Vendido"
               >
                 <FontAwesomeIcon icon={faPaperPlane} />
@@ -182,10 +187,13 @@ const mapStateToProps = (store: IRootState) => ({
   totalCount: store.stock.totalCount,
 });
 const mapDispatchToProps = {
+  getProducts,
   getStock,
   setProductToEdit,
   setToTransferProduct,
   setToTransferFoodStampProduct,
+  setToViewProduct,
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

@@ -7,6 +7,7 @@ interface IRequestDTO {
   brand: string;
   ncm_id: string;
   active: boolean;
+  valor_product: number;
 }
 
 class CreateProductService {

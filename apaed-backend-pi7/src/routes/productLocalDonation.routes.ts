@@ -28,7 +28,7 @@ productLocalDonationRouter.get('/', async (request, response) => {
       ' left outer join units_measure um on n.unity_measurement_id = um.id' +
       ' left outer join food_stamp fs on pld.food_stamp_id = fs.id' +
       ' where local_id = $1 and food_stamp_id is NULL ' +
-      'group by product_id, expiration_date, n.ncm_code, p.name, p.brand, um.unity_measurement, food_stamp_id LIMIT $2 OFFSET $3',
+      'group by product_id, expiration_date, n.ncm_code, p.name, p.brand, um.unity_measurement, food_stamp_id, p.valor_product LIMIT $2 OFFSET $3',
     // @ts-ignore
     [request.localId, take, skip],
   );
@@ -64,7 +64,7 @@ productLocalDonationRouter.get('/', async (request, response) => {
       ' left outer join units_measure um on n.unity_measurement_id = um.id' +
       ' left outer join food_stamp fs on pld.food_stamp_id = fs.id' +
       ' where local_id = $1 and food_stamp_id is NULL ' +
-      'group by product_id, expiration_date, n.ncm_code, p.name, p.brand, um.unity_measurement, food_stamp_id',
+      'group by product_id, expiration_date, n.ncm_code, p.name, p.brand, um.unity_measurement, food_stamp_id, p.valor_product',
     // @ts-ignore
     [request.localId],
   );

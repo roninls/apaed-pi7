@@ -35,6 +35,19 @@ export interface ITransferPostPut {
   updated_at?: string;
 }
 
+export interface IEditValor {
+  id?: string;
+  product_id?: string;
+  product_name?: string;
+  product_brand?: string;
+  product_ncm_code?: string;
+  total_amount_transfered?: number;
+  active?: boolean;
+  created_at?: string;
+  updated_at?: string;
+  valor_product?: number;
+}
+
 export interface ITransferFoodStamp {
   product_id?: string;
   food_stamp_id?: string;

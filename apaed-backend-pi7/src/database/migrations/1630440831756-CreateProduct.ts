@@ -34,6 +34,11 @@ export default class CreateProduct1630440831756 implements MigrationInterface {
             isNullable: false,
           },
           {
+            name: 'valor_product',
+            type: 'numeric',
+            isNullable: true,
+          },
+          {
             name: 'active',
             type: 'boolean',
             isNullable: false,
